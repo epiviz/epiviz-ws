@@ -2,39 +2,43 @@ from typing import List, Optional
 from datetime import datetime
 from fastapi import Header, APIRouter
 
-from app.api.models import WorkspaceIn, WorkspaceOut
-from app.api import db_manager
+from app import models
+from app import db_manager
 
 workspaces = APIRouter()
 
-@workspaces.get('/', response_model=List[WorkspaceOut])
+@workspaces.get('/', response_model=List[models.Workspace])
 async def index():
     return await db_manager.get_all_workspaces()
 
+@workspaces.get('/{workspace_id}', response_model=models.Workspace)
+async def get_workspace(workspace_id: str):
+    return await db_manager.get_workspace(workspace_id)
+
 @workspaces.post('/', status_code=201)
-async def add_workspace(payload: WorkspaceIn):
-    ws_id = await db_manager.add_workspace(payload)
+async def add_workspace(payload: models.WorkspaceCreate):
+    id = await db_manager.add_workspace(payload)
     response = {
-        'ws_id': ws_id,
+        'id': id,
         **payload.dict()
     }
 
     return response
 
-@workspaces.put('/{ws_id}')
-async def update_workspace(ws_id: int, payload: WorkspaceIn):
-    ws = await db_manager.get_workspace(ws_id)
+@workspaces.put('/{workspace_id}')
+async def update_workspace(workspace_id: str, payload: models.WorkspaceUpdate):
+    ws = await db_manager.get_workspace(workspace_id)
     if not ws:
         raise HTTPException(status_code=404, detail="Workspace not found")
 
     update_data = payload.dict(exclude_unset=True)
-    ws_in_db = WorkspaceIn(**ws)
+    ws_in_db = models.WorkspaceUpdate(**ws)
     updated_ws = ws_in_db.copy(update=update_data)
-    return await db_manager.update_workspace(ws_id, updated_ws)
+    return await db_manager.update_workspace(workspace_id, updated_ws)
 
-@workspaces.delete('/{ws_id}')
-async def delete_workspace(ws_id: int):
-    ws = await db_manager.get_workspace(ws_id)
+@workspaces.delete('/{workspace_id}')
+async def delete_workspace(workspace_id: str):
+    ws = await db_manager.get_workspace(workspace_id)
     if not ws:
         raise HTTPException(status_code=404, detail="Workspace not found")
-    return await db_manager.delete_workspace(ws_id)
+    return await db_manager.delete_workspace(workspace_id)

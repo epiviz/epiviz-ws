@@ -1,21 +1,22 @@
-from sqlalchemy import (Column, Integer, MetaData, String, Table, create_engine, ARRAY)
-from databases import Database
+import sqlalchemy
+import databases
 
 DATABASE_URL = 'postgresql://localhost/epiviz-ws_db'
+database = databases.Database(DATABASE_URL)
+metadata = sqlalchemy.MetaData()
 
-engine = create_engine(DATABASE_URL)
-metadata = MetaData()
-
-workspaces = Table(
+workspaces = sqlalchemy.Table(
     'workspaces',
     metadata,
-    Column('user_id', String, primary_key=True),
-    Column('ws_id', Integer, primary_key=True),
-    Column('title', String, nullable=True),
-    Column('description', String, nullable=True),
-    Column('genomes', ARRAY(String)),
-    Column('tags', ARRAY(String), nullable=True),
-    Column('ws_def', String)
+    sqlalchemy.Column('id', sqlalchemy.Integer, primary_key=True, index=True),
+    sqlalchemy.Column('workspace_id', sqlalchemy.String, index=True),
+    sqlalchemy.Column('user_id', sqlalchemy.String),
+    sqlalchemy.Column('title', sqlalchemy.String, nullable=True),
+    sqlalchemy.Column('description', sqlalchemy.String, nullable=True),
+    sqlalchemy.Column('genomes', sqlalchemy.ARRAY(sqlalchemy.String), nullable=True),
+    sqlalchemy.Column('tags', sqlalchemy.ARRAY(sqlalchemy.String), nullable=True),
+    sqlalchemy.Column('workspace', sqlalchemy.String)
 )
 
-database = Database(DATABASE_URL)
+engine = sqlalchemy.create_engine(DATABASE_URL)
+metadata.create_all(engine)

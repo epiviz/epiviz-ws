@@ -1,21 +1,27 @@
 from typing import List, Optional
-from datetime import datetime
 from pydantic import BaseModel
 
-class WorkspaceIn(BaseModel):
+class WorkspaceBase(BaseModel):
+    workspace_id: str
     user_id: str
     title: Optional[str]
     description: Optional[str]
-    genomes: List[str]
+    genomes: Optional[List[str]]
     tags: Optional[List[str]]
-    ws_def: str
+    workspace: str
 
-class WorkspaceOut(WorkspaceIn):
-    ws_id: int
+class WorkspaceCreate(WorkspaceBase):
+    pass
 
-class WorkspaceUpdate(WorkspaceIn):
+class Workspace(WorkspaceBase):
+    id: int
+
+
+class WorkspaceUpdate(WorkspaceBase):
+    workspace_id: Optional[str] = None
+    user_id: Optional[str] = None
     title: Optional[str] = None
     description: Optional[str] = None
     genomes: Optional[List[str]] = None
     tags: Optional[List[str]] = None
-    ws_def: Optional[str] = None
+    workspace: Optional[str] = None
