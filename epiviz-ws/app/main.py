@@ -1,3 +1,5 @@
+# https://fastapi.tiangolo.com/advanced/async-sql-databases/
+
 from fastapi import FastAPI, Depends
 from app.db import database
 from app.workspaces import workspaces

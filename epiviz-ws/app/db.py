@@ -21,6 +21,7 @@ workspaces = sqlalchemy.Table(
 engine = sqlalchemy.create_engine(DATABASE_URL)
 metadata.create_all(engine)
 
+# https://alembic.sqlalchemy.org/en/latest/cookbook.html#building-an-up-to-date-database-from-scratch
 from alembic.config import Config
 from alembic import command
 alembic_cfg = Config("alembic.ini")
