@@ -1,0 +1,24 @@
+version: '3.7'
+
+services: 
+    workspace_service:
+        build: ./epiviz-ws
+        command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+        volumes: 
+            - ./epiviz-ws/:/app/
+        ports:
+            - 8001:8000
+        environment: 
+            - DATABASE_URI=postgresql://epiviz-ws_db_username:epiviz-ws_db_password@epiviz-ws_db/epiviz-ws_db_dev
+
+    epiviz-ws_db:
+        image: postgres:12.1-alpine
+        volumes: 
+            - postgres_data_workspace:/var/lib/postgresql/data/
+        environment: 
+            - POSTGRES_USER=epiviz-ws_db_username
+            - POSTGRES_PASSWORD=epiviz-ws_db_password
+            - POSTGRES_DB=epiviz-ws_db_dev
+
+volumes: 
+    postgres_data_workspace:
