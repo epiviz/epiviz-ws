@@ -1,8 +1,9 @@
 import sqlalchemy
 import databases
+import os
 
-DATABASE_URL = 'postgresql://localhost/epiviz-ws_db'
-database = databases.Database(DATABASE_URL)
+DATABASE_URI = os.getenv('DATABASE_URI')
+database = databases.Database(DATABASE_URI)
 metadata = sqlalchemy.MetaData()
 
 workspaces = sqlalchemy.Table(
@@ -18,7 +19,7 @@ workspaces = sqlalchemy.Table(
     sqlalchemy.Column('workspace', sqlalchemy.String)
 )
 
-engine = sqlalchemy.create_engine(DATABASE_URL)
+engine = sqlalchemy.create_engine(DATABASE_URI)
 metadata.create_all(engine)
 
 # https://alembic.sqlalchemy.org/en/latest/cookbook.html#building-an-up-to-date-database-from-scratch

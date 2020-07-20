@@ -14,6 +14,6 @@ async def startup():
 async def shutdown():
     await database.disconnect()
 
-app.include_router(workspaces)
+app.include_router(workspaces, prefix='/api/v1/workspaces', tags=['workspaces'])
 
 
