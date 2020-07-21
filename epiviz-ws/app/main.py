@@ -4,7 +4,7 @@ from fastapi import FastAPI, Depends
 from app.db import database
 from app.workspaces import workspaces
 
-app = FastAPI()
+app = FastAPI(openapi_url="/api/v1/workspaces/openapi.json", docs_url="/api/v1/workspaces/docs")
         
 @app.on_event("startup")
 async def startup():
