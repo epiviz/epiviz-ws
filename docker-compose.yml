@@ -1,12 +1,12 @@
 version: '3.3'
 
 services: 
-    workspace_service:
-        build: ./epiviz-ws
+    epiviz-ws_api:
+        build: ./epiviz-ws_api
    #     command: nc -tz epiviz-ws_db 5432
         command: /app/wait-for-postgres.sh epiviz-ws_db uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
         volumes: 
-            - ./epiviz-ws/:/app/
+            - ./epiviz-ws_api/:/app/
         ports:
             - 8001:8000
         environment: 
