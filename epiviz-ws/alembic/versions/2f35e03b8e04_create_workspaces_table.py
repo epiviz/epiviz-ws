@@ -26,7 +26,7 @@ def upgrade():
     sa.Column('description', sa.String(), nullable=True),
     sa.Column('genomes', sa.ARRAY(sa.String()), nullable=True),
     sa.Column('tags', sa.ARRAY(sa.String()), nullable=True),
-    sa.Column('workspace', sa.String(), nullable=True),
+    sa.Column('workspace', sa.JSON(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_workspaces_id'), 'workspaces', ['id'], unique=False)

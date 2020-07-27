@@ -16,7 +16,7 @@ workspaces = sqlalchemy.Table(
     sqlalchemy.Column('description', sqlalchemy.String, nullable=True),
     sqlalchemy.Column('genomes', sqlalchemy.ARRAY(sqlalchemy.String), nullable=True),
     sqlalchemy.Column('tags', sqlalchemy.ARRAY(sqlalchemy.String), nullable=True),
-    sqlalchemy.Column('workspace', sqlalchemy.String)
+    sqlalchemy.Column('workspace', sqlalchemy.JSON)
 )
 
 engine = sqlalchemy.create_engine(DATABASE_URI)

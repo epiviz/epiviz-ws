@@ -8,7 +8,7 @@ class WorkspaceBase(BaseModel):
     description: Optional[str]
     genomes: Optional[List[str]]
     tags: Optional[List[str]]
-    workspace: str
+    workspace: dict
 
 class WorkspaceCreate(WorkspaceBase):
     pass
@@ -24,4 +24,4 @@ class WorkspaceUpdate(WorkspaceBase):
     description: Optional[str] = None
     genomes: Optional[List[str]] = None
     tags: Optional[List[str]] = None
-    workspace: Optional[str] = None
+    workspace: Optional[dict] = None
