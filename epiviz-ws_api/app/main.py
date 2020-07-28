@@ -4,8 +4,12 @@ from fastapi import FastAPI, Depends
 from app.db import database
 from app.workspaces import workspaces
 from fastapi.middleware.cors import CORSMiddleware
+import os
 
-app = FastAPI(openapi_url='/api/v1/openapi.json', docs_url='/api/v1/docs')
+openapi_prefix = os.getenv('OPENAPI_PREFIX', default='')
+print("using api prefix" + openapi_prefix)
+
+app = FastAPI(openapi_prefix=openapi_prefix, openapi_url='/api/v1/openapi.json', docs_url='/api/v1/docs')
 
 origins = ["*"]
 
