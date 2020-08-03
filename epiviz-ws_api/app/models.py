@@ -2,7 +2,6 @@ from typing import List, Optional
 from pydantic import BaseModel
 
 class WorkspaceBase(BaseModel):
-    workspace_id: str
     user_id: str
     title: Optional[str]
     description: Optional[str]
@@ -18,7 +17,6 @@ class Workspace(WorkspaceBase):
 
 
 class WorkspaceUpdate(WorkspaceBase):
-    workspace_id: Optional[str] = None
     user_id: Optional[str] = None
     title: Optional[str] = None
     description: Optional[str] = None

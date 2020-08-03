@@ -10,7 +10,6 @@ workspaces = sqlalchemy.Table(
     'workspaces',
     metadata,
     sqlalchemy.Column('id', sqlalchemy.Integer, primary_key=True, index=True),
-    sqlalchemy.Column('workspace_id', sqlalchemy.String, index=True),
     sqlalchemy.Column('user_id', sqlalchemy.String),
     sqlalchemy.Column('title', sqlalchemy.String, nullable=True),
     sqlalchemy.Column('description', sqlalchemy.String, nullable=True),

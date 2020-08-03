@@ -11,9 +11,9 @@ workspaces = APIRouter()
 async def index():
     return await db_manager.get_all_workspaces()
 
-@workspaces.get('/{workspace_id}', response_model=models.Workspace)
-async def get_workspace(workspace_id: str):
-    return await db_manager.get_workspace(workspace_id)
+@workspaces.get('/{id}', response_model=models.Workspace)
+async def get_workspace(id: int):
+    return await db_manager.get_workspace(id)
 
 @workspaces.post('/', status_code=201)
 async def add_workspace(payload: models.WorkspaceCreate):
@@ -25,20 +25,20 @@ async def add_workspace(payload: models.WorkspaceCreate):
 
     return response
 
-@workspaces.put('/{workspace_id}')
-async def update_workspace(workspace_id: str, payload: models.WorkspaceUpdate):
-    ws = await db_manager.get_workspace(workspace_id)
+@workspaces.put('/{id}')
+async def update_workspace(id: int, payload: models.WorkspaceUpdate):
+    ws = await db_manager.get_workspace(id)
     if not ws:
         raise HTTPException(status_code=404, detail="Workspace not found")
 
     update_data = payload.dict(exclude_unset=True)
     ws_in_db = models.WorkspaceUpdate(**ws)
     updated_ws = ws_in_db.copy(update=update_data)
-    return await db_manager.update_workspace(workspace_id, updated_ws)
+    return await db_manager.update_workspace(id, updated_ws)
 
-@workspaces.delete('/{workspace_id}')
-async def delete_workspace(workspace_id: str):
-    ws = await db_manager.get_workspace(workspace_id)
+@workspaces.delete('/{id}')
+async def delete_workspace(id: int):
+    ws = await db_manager.get_workspace(id)
     if not ws:
         raise HTTPException(status_code=404, detail="Workspace not found")
-    return await db_manager.delete_workspace(workspace_id)
+    return await db_manager.delete_workspace(id)
