@@ -15,7 +15,6 @@ class WorkspaceCreate(WorkspaceBase):
 class Workspace(WorkspaceBase):
     id: int
 
-
 class WorkspaceUpdate(WorkspaceBase):
     user_id: Optional[str] = None
     title: Optional[str] = None
@@ -23,3 +22,8 @@ class WorkspaceUpdate(WorkspaceBase):
     genomes: Optional[List[str]] = None
     tags: Optional[List[str]] = None
     workspace: Optional[dict] = None
+
+class User(BaseModel):
+    username: str
+    email: Optional[str] = None
+    full_name: Optional[str] = None
