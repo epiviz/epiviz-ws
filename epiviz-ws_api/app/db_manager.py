@@ -1,5 +1,6 @@
 from app.db import database, workspaces
 from app import models
+from uuid import uuid4
 
 async def get_all_workspaces():
     query = workspaces.select()
@@ -11,6 +12,10 @@ async def get_user_workspaces(user_id: str):
 
 async def get_workspace(id: int):
     query = workspaces.select(workspaces.c.id == id)
+    return await database.fetch_one(query)
+
+async def get_workspace_uuid(uuid: str):
+    query = workspaces.select(workspaces.c.workspace_uuid == uuid)
     return await database.fetch_one(query)
 
 async def add_workspace(ws: models.WorkspaceCreate):
