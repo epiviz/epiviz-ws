@@ -36,8 +36,8 @@ def get_public_key_data(kid):
     return key_data
 
 def is_token_valid(token:str):
-    print("in is token valid")
-    print(token)
+    # print("in is token valid")
+    # print(token)
     global CERTS
     # get the kid from the headers prior to verification
     headers = jwt.get_unverified_headers(token)
