@@ -8,13 +8,13 @@ class WorkspaceBase(BaseModel):
     genomes: Optional[List[str]]
     tags: Optional[List[str]]
     workspace: dict
-    workspace_uuid: Optional[str] = None
 
 class WorkspaceCreate(WorkspaceBase):
     pass
 
 class Workspace(WorkspaceBase):
     id: int
+    workspace_uuid: Optional[str]
 
 class WorkspaceUpdate(WorkspaceBase):
     user_id: Optional[str] = None
@@ -23,7 +23,6 @@ class WorkspaceUpdate(WorkspaceBase):
     genomes: Optional[List[str]] = None
     tags: Optional[List[str]] = None
     workspace: Optional[dict] = None
-    workspace_uuid: Optional[str] = None
 
 class User(BaseModel):
     username: str

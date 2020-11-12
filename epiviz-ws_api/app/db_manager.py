@@ -19,9 +19,14 @@ async def get_workspace_uuid(uuid: str):
     return await database.fetch_one(query)
 
 async def add_workspace(ws: models.WorkspaceCreate):
-    ws.workspace_uuid = str(uuid4()).split("-")[0]
-    query = workspaces.insert().values(ws.dict())
-    return await database.execute(query)
+    tws = ws.dict()
+    tws['workspace_uuid'] = str(uuid4()).split("-")[0]
+    query = workspaces.insert().values(tws)
+    try:
+        id = await database.execute(query)
+        return id, tws['workspace_uuid']
+    except Exception as e:
+        return add_workspace(**ws)
 
 async def delete_workspace(id: int):
     query = workspaces.delete().where(workspaces.c.id == id)

@@ -16,7 +16,7 @@ workspaces = sqlalchemy.Table(
     sqlalchemy.Column('genomes', sqlalchemy.ARRAY(sqlalchemy.String), nullable=True),
     sqlalchemy.Column('tags', sqlalchemy.ARRAY(sqlalchemy.String), nullable=True),
     sqlalchemy.Column('workspace', sqlalchemy.JSON),
-    sqlalchemy.Column('workspace_uuid', sqlalchemy.String)
+    sqlalchemy.Column('workspace_uuid', sqlalchemy.String, unique=True, index=True)
 )
 
 # sqlalchemy.Column('workspace_uuid', sqlalchemy.String)

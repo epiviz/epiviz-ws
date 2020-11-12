@@ -27,14 +27,12 @@ async def get_workspace(id: int):
 async def get_workspace_uuid(uuid: str):
     return await db_manager.get_workspace_uuid(uuid)
 
-@workspaces.post('/', status_code=201)
+@workspaces.post('/', response_model=models.Workspace)
 async def add_workspace(payload: models.WorkspaceCreate):
-    print("in add workspace")
-    id = await db_manager.add_workspace(payload)
-    print("after db add workspace")
-    print(id)
+    id, workspace_uuid = await db_manager.add_workspace(payload)
     response = {
         'id': id,
+        'workspace_uuid': workspace_uuid,
         **payload.dict()
     }
 

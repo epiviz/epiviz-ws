@@ -7,8 +7,9 @@ DATABASE_URI = os.getenv('DATABASE_URI')
 db = create_engine(DATABASE_URI)
 
 with db.connect() as conn:
-    conn.execute("alter table workspaces drop column workspace_uuid;")
-    conn.execute("alter table workspaces add column workspace_uuid varchar;")
+    conn.execute("ALTER TABLE workspaces DROP COLUMN workspace_uuid;")
+    conn.execute("ALTER TABLE workspaces ADD COLUMN workspace_uuid VARCHAR UNIQUE")
+    conn.execute("CREATE UNIQUE INDEX uuid_idx ON workspaces (workspace_uuid);")
     rs = conn.execute("select * from workspaces;")
 
     for r in rs:
