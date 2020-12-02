@@ -21,10 +21,8 @@ def get_public_key_data(kid):
     global CERTS
     key_data = CERTS.get(kid)
     if not key_data:
-        # the URL comes from "jwks_uri" in the .well-known endpoint
-        # https://restst.gene.com/auth/realms/gene/.well-known/openid-configuration
-        certs_uri = "http://restst.gene.com/auth/realms/gene/protocol/openid-connect/certs"
-        response = requests.get(certs_uri)
+        certs_uri = "https://authservice-test.gene.com/auth/realms/gene/protocol/openid-connect/certs"
+        response = requests.get(certs_uri, verify=False)
         assert response.status_code == 200
         result = response.json()
         for data in result["keys"]:
