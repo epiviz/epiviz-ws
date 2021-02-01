@@ -10,6 +10,10 @@ async def get_user_workspaces(user_id: str):
     query = workspaces.select(workspaces.c.user_id == user_id)
     return await database.fetch_all(query)
 
+async def get_workspace_tag(tag: str):
+    query = workspaces.select(workspaces.c.tags.any(tag))
+    return await database.fetch_all(query)
+
 async def get_workspace(id: int):
     query = workspaces.select(workspaces.c.id == id)
     return await database.fetch_one(query)

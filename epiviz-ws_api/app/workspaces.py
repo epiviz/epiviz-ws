@@ -27,6 +27,10 @@ async def get_workspace(id: int):
 async def get_workspace_uuid(uuid: str):
     return await db_manager.get_workspace_uuid(uuid)
 
+@workspaces.get('/tag/{tag}', response_model=List[models.Workspace])
+async def get_workspace_tag(tag: str):
+    return await db_manager.get_workspace_tag(tag)
+
 @workspaces.post('/', response_model=models.Workspace)
 async def add_workspace(payload: models.WorkspaceCreate):
     id, workspace_uuid = await db_manager.add_workspace(payload)
