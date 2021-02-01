@@ -21,12 +21,15 @@ def get_public_key_data(kid):
     global CERTS
     key_data = CERTS.get(kid)
     if not key_data:
-        certs_uri = "https://authservice-test.gene.com/auth/realms/gene/protocol/openid-connect/certs"
-        response = requests.get(certs_uri, verify=False)
-        assert response.status_code == 200
-        result = response.json()
-        for data in result["keys"]:
-            CERTS[data["kid"]] = data
+        certs_uri = ["https://authservice.gene.com/auth/realms/gene/protocol/openid-connect/certs", 
+                    "https://authservice-test.gene.com/auth/realms/gene/protocol/openid-connect/certs"]
+
+        for cer in certs_uri:
+            response = requests.get(cer, verify=False)
+            assert response.status_code == 200
+            result = response.json()
+            for data in result["keys"]:
+                CERTS[data["kid"]] = data
         # now it should work
         key_data = CERTS.get(kid)
         assert key_data, "Couldn't find kid %s" % kid
