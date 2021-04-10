@@ -1,7 +1,9 @@
 from fastapi import HTTPException, Request, Header, status
 from fastapi.security.utils import get_authorization_scheme_param
 
-from app.models import User
+from app.db.models import User
+
+from app.config import AUTH_URLS
 
 from typing import List, Optional
 from pydantic import BaseModel
@@ -21,8 +23,7 @@ def get_public_key_data(kid):
     global CERTS
     key_data = CERTS.get(kid)
     if not key_data:
-        certs_uri = ["https://authservice.gene.com/auth/realms/gene/protocol/openid-connect/certs", 
-                    "https://authservice-test.gene.com/auth/realms/gene/protocol/openid-connect/certs"]
+        certs_uri = AUTH_URLS
 
         for cer in certs_uri:
             response = requests.get(cer, verify=False)
