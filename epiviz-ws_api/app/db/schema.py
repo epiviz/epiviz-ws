@@ -28,6 +28,10 @@ class Finding(Base):
 
     description = Column(String(), nullable=True)
     gene = Column(String(), nullable=True)
+    chrm = Column(String(), nullable=True)
+    start = Column(Integer, nullable=True)
+    end = Column(Integer, nullable=True)
+
     genes_in_view = Column(ARRAY(String()), nullable=True)
     chart_markers = Column(JSON, nullable=True)
 

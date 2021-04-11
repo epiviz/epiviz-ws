@@ -40,6 +40,9 @@ class FindingBase(BaseModel):
     genes_in_view: Optional[List[str]]
     chart_markers: Optional[dict]
     workspace_id: Optional[str]
+    chrm: Optional[str]
+    start: Optional[int]
+    end: Optional[int]
 
 class FindingCreate(WorkspaceBase):
     pass
