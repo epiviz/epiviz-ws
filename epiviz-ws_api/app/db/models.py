@@ -39,24 +39,27 @@ class FindingBase(BaseModel):
     gene: Optional[str]
     genes_in_view: Optional[List[str]]
     chart_markers: Optional[dict]
-    workspace_id: Optional[str]
+    workspace_id: Optional[int]
     chrm: Optional[str]
     start: Optional[int]
     end: Optional[int]
 
-class FindingCreate(WorkspaceBase):
+class FindingCreate(FindingBase):
     pass
 
-class Finding(WorkspaceBase):
+class Finding(FindingBase):
     id: int
     class Config:
         orm_mode = True
 
-class FindingUpdate(WorkspaceBase):
+class FindingUpdate(FindingBase):
     user_id: str
     title: Optional[str]
     description: Optional[str]
     gene: Optional[str]
     genes_in_view: Optional[List[str]]
     chart_markers: Optional[dict]
-    workspace_id: Optional[str]
+    workspace_id: Optional[int]
+    chrm: Optional[str]
+    start: Optional[int]
+    end: Optional[int]

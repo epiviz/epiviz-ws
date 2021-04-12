@@ -40,7 +40,7 @@ async def get_workspace_uuid(uuid: str,
     return await db_manager.get_workspace_uuid(db, uuid)
 
 @workspaces.get('/uuid/{uuid}/findings', response_model=List[models.Finding])
-async def get_workspace_uuid(uuid: str,
+async def get_workspace_uuid_findings(uuid: str,
     db: Session = Depends(get_db)):
     current_ws = await db_manager.get_workspace_uuid(db, uuid)
 

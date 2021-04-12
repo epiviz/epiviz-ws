@@ -34,5 +34,5 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(workspaces, prefix='/api/v1/workspaces', tags=['workspaces'])
+app.include_router(workspaces, prefix='/api/v1', tags=['workspaces'])
 app.include_router(findings, prefix='/api/v1/findings', tags=['findings'])
