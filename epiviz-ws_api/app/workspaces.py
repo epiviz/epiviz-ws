@@ -48,7 +48,7 @@ async def update_workspace(id: int, payload: models.WorkspaceUpdate, user: model
     if not ws:
         raise HTTPException(status_code=404, detail="Workspace not found")
 
-    if ws.get("user_id") == user.username:
+    if ws.get("user_id") == user.username or user.username == "admin":
         update_data = payload.dict(exclude_unset=True)
         ws_in_db = models.WorkspaceUpdate(**ws)
         updated_ws = ws_in_db.copy(update=update_data)

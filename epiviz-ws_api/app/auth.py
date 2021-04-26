@@ -1,4 +1,4 @@
-from fastapi import HTTPException, Request, Header, status
+from fastapi import HTTPException, Request, Header, status, Body
 from fastapi.security.utils import get_authorization_scheme_param
 
 from app.models import User
@@ -11,6 +11,7 @@ from jose import jwt, jwk
 from jose.utils import base64url_decode
 
 import time
+import socket
 
 # From sebastian's documentation on KeyCloak and Authentication
 # cache certificates from Keycload, so we don't query Keycloak for each token
@@ -74,22 +75,36 @@ def is_token_valid(token:str):
     if time.time() > claims['exp']:  # time() returns epoch (UTC)
         print('Token has expired')
 
-    return User(username=claims.get("preferred_username"), 
-                    email=claims.get("email"), 
-                    full_name=claims.get("name"))
+    if claims.get("resource_access"):
+        if "Epiviz" in claims.get("resource_access"):
+            return User(username=claims.get("preferred_username"), 
+                email=claims.get("email"), 
+                full_name=claims.get("name"),
+                roles=claims.get("resource_access")["Epiviz"]["roles"])
+        elif "Epiviz-backend" in claims.get("resource_access"):
+            return User(username=claims.get("preferred_username"), 
+                email=claims.get("email"), 
+                full_name=claims.get("name"),
+                roles=claims.get("resource_access")["Epiviz-backend"]["roles"])
 
-def get_user_from_header(*, authorization: str = Header(None)) -> User:
+    return User(username=claims.get("preferred_username"), 
+            email=claims.get("email"), 
+            full_name=claims.get("name"))
+
+def get_user_from_header(*, request: Request, authorization: str = Header(None)) -> User:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
 
+    apiuser = request.headers.get("X-API-Username")
+
     try:
         wrangler = socket.gethostbyname("emd-wrangler")
         if request.client.host == wrangler:
             return User(username="admin", email="gepiviz-dev-d@gmail.com", 
-                full_name="admin")
+                full_name="admin", roles=["admin"])
     except Exception as e:
         print("cannot find host: emd-wrangler")
 
@@ -100,6 +115,10 @@ def get_user_from_header(*, authorization: str = Header(None)) -> User:
 
     try:
         tokenuser = is_token_valid(token)
+        # roles = get_roles_by_user(tokenuser.username)
+        if apiuser and "admin" in tokenuser.roles:
+            return User(username="admin", email="gepiviz-dev-d@gmail.com", 
+                full_name="admin", roles=["admin"])
         return tokenuser
     except Exception as e:
         raise credentials_exception
