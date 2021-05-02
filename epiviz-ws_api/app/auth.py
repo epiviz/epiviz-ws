@@ -98,8 +98,6 @@ def get_user_from_header(*, request: Request, authorization: str = Header(None))
         headers={"WWW-Authenticate": "Bearer"},
     )
 
-    apiuser = request.headers.get("X-API-Username")
-
     try:
         wrangler = socket.gethostbyname("emd-wrangler")
         if request.client.host == wrangler:
@@ -115,10 +113,6 @@ def get_user_from_header(*, request: Request, authorization: str = Header(None))
 
     try:
         tokenuser = is_token_valid(token)
-        # roles = get_roles_by_user(tokenuser.username)
-        if apiuser and "admin" in tokenuser.roles:
-            return User(username="admin", email="gepiviz-dev-d@gmail.com", 
-                full_name="admin", roles=["admin"])
         return tokenuser
     except Exception as e:
         raise credentials_exception
