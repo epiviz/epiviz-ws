@@ -29,3 +29,27 @@ class User(BaseModel):
     email: Optional[str] = None
     full_name: Optional[str] = None
     roles: Optional[List[str]] = None
+
+class FindingBase(BaseModel):
+    user_id: str
+    title: str
+    description: str
+    gene: Optional[List[str]]
+    genes_in_view: Optional[List[str]]
+    chart_markers: Optional[List[str]]
+    datasets: Optional[List[str]]
+    chr: str
+    start: int
+    end: int
+    workspace_id: int
+    workspace_uuid: str
+
+class FindingCreate(FindingBase):
+    pass
+
+class Finding(FindingBase):
+    id: int
+
+class FindingUpdate(FindingBase):
+    title: Optional[str] = None
+    description: Optional[str] = None

@@ -1,7 +1,8 @@
-from app.db import database, workspaces
+from app.db import database, workspaces, findings
 from app import models
 from uuid import uuid4
 
+# Workspaces
 async def get_all_workspaces():
     query = workspaces.select()
     return await database.fetch_all(query)
@@ -44,3 +45,41 @@ async def update_workspace(id: int, ws: models.WorkspaceUpdate):
             .values(**ws.dict())
     )
     return await database.execute(query=query)
+
+async def get_workspace_findings(id:int):
+    query = findings.select(findings.c.workspace_id == id)
+    res =  await database.fetch_all(query)
+    print(res)
+    return res
+
+# Findings
+async def get_all_findings():
+    query = findings.select()
+    return await database.fetch_all(query)
+
+async def get_user_findings(user_id: str):
+    query = findings.select(findings.c.user_id == user_id)
+    return await database.fetch_all(query)
+
+async def get_finding(id: int):
+    query = findings.select(findings.c.id == id)
+    return await database.fetch_one(query)
+
+async def add_finding(fd: models.FindingCreate):
+    tfd = fd.dict()
+    query = findings.insert().values(tfd)
+    return await database.execute(query)
+
+async def delete_finding(id: int):
+    query = findings.delete().where(findings.c.id == id)
+    return await database.execute(query)
+
+async def update_finding(id: int, fd: models.FindingUpdate):
+    query = (
+        findings
+            .update()
+            .where(findings.c.id == id)
+            .values(**fd.dict())
+    )
+    return await database.execute(query=query)
+

@@ -3,6 +3,7 @@
 from fastapi import FastAPI, Depends
 from app.db import database
 from app.workspaces import workspaces
+from app.findings import findings
 from fastapi.middleware.cors import CORSMiddleware
 import os
 
@@ -30,5 +31,6 @@ async def shutdown():
     await database.disconnect()
 
 app.include_router(workspaces, prefix='/api/v1', tags=['workspaces'])
+app.include_router(findings, prefix='/api/v1/findings', tags=['findings'])
 
 

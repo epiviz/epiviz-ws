@@ -23,6 +23,10 @@ async def get_user_workspaces(user_id: str, user: models.User = Depends(get_user
 async def get_workspace(id: int):
     return await db_manager.get_workspace(id)
 
+@workspaces.get('/{id}/findings', response_model=List[models.Finding])
+async def get_workspace_findings(id: int):
+    return await db_manager.get_workspace_findings(id)
+
 @workspaces.get('/uuid/{uuid}', response_model=models.Workspace)
 async def get_workspace_uuid(uuid: str):
     return await db_manager.get_workspace_uuid(uuid)

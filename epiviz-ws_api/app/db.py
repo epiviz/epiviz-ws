@@ -19,13 +19,31 @@ workspaces = sqlalchemy.Table(
     sqlalchemy.Column('workspace_uuid', sqlalchemy.String, unique=True, index=True)
 )
 
+findings = sqlalchemy.Table(
+    'findings',
+    metadata,
+    sqlalchemy.Column('id', sqlalchemy.Integer, primary_key=True, index=True),
+    sqlalchemy.Column('user_id', sqlalchemy.String, index=True),
+    sqlalchemy.Column('title', sqlalchemy.String, index=True),
+    sqlalchemy.Column('description', sqlalchemy.String, index=True),
+    sqlalchemy.Column('gene', sqlalchemy.ARRAY(sqlalchemy.String), nullable=True, index=True),
+    sqlalchemy.Column('genes_in_view', sqlalchemy.ARRAY(sqlalchemy.String), nullable=True),
+    sqlalchemy.Column('chart_markers', sqlalchemy.ARRAY(sqlalchemy.String), nullable=True),
+    sqlalchemy.Column('datasets', sqlalchemy.ARRAY(sqlalchemy.String), nullable=True),
+    sqlalchemy.Column('chr', sqlalchemy.String, index=True),
+    sqlalchemy.Column('start', sqlalchemy.Integer, index=True),
+    sqlalchemy.Column('end', sqlalchemy.Integer, index=True),
+    sqlalchemy.Column('workspace_id', sqlalchemy.Integer, index=True),
+    sqlalchemy.Column('workspace_uuid', sqlalchemy.String, index=True)
+)
+
 # sqlalchemy.Column('workspace_uuid', sqlalchemy.String)
 
 engine = sqlalchemy.create_engine(DATABASE_URI)
 metadata.create_all(engine)
 
 # https://alembic.sqlalchemy.org/en/latest/cookbook.html#building-an-up-to-date-database-from-scratch
-from alembic.config import Config
-from alembic import command
-alembic_cfg = Config("alembic.ini")
-command.stamp(alembic_cfg, "head")
+# from alembic.config import Config
+# from alembic import command
+# alembic_cfg = Config("alembic.ini")
+# command.stamp(alembic_cfg, "head")
